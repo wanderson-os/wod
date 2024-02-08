@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gap/gap.dart';
 import 'package:wod/src/model/class.dart';
-import 'package:wod/src/util/configs.dart';
+import 'package:wod/src/util/wod_configs.dart';
 
 import 'widgets/custom/custom_modal_mult_select.dart';
 import 'widgets/custom/custom_modal_select.dart';
