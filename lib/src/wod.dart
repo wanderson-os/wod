@@ -281,6 +281,13 @@ String? Function(String?)? _validator(RecordWodField recordField) {
                   color: Colors.blue,
                 ),
               ),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  width: 1,
+                  color: Colors.black,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
               label: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -431,9 +438,14 @@ String? Function(String?)? _validator(RecordWodField recordField) {
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.always,
               focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                  color: Colors.blue,
+                borderSide: BorderSide(),
+              ),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  width: 1,
+                  color: Colors.black,
                 ),
+                borderRadius: BorderRadius.circular(5),
               ),
               label: Row(
                 mainAxisSize: MainAxisSize.min,

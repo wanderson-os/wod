@@ -107,9 +107,6 @@ class CustomModalSelect<T> extends StatelessWidget {
                                                 0.5),
                                         child: TextField(
                                           focusNode: _focusNodeTf,
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                          ),
                                           onChanged: (value) {
                                             setState(
                                               () {
