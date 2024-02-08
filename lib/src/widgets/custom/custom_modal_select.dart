@@ -207,6 +207,14 @@ class CustomModalSelect<T> extends StatelessWidget {
                     color: Colors.red,
                   ),
                 ),
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    width: formFieldState.hasError ? 2 : 1,
+                    color: formFieldState.hasError
+                        ? Colors.red
+                        : Theme.of(context).primaryColor,
+                  ),
+                ),
                 errorText: formFieldState.errorText,
                 hintTextDirection: TextDirection.ltr,
                 label: Text(
