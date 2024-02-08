@@ -161,10 +161,11 @@ class CustomModalSelect<T> extends StatelessWidget {
                               min(600, MediaQuery.sizeOf(context).width * 0.8),
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
-                            child: GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      mainAxisExtent: 50, crossAxisCount: 1),
+                            child: ListView.separated(
+                              separatorBuilder: (context, index) =>
+                                  const Divider(
+                                height: 1,
+                              ),
                               itemCount: _list.length,
                               shrinkWrap: true,
                               itemBuilder: (context, index) {
@@ -180,7 +181,6 @@ class CustomModalSelect<T> extends StatelessWidget {
                                   title: Text(
                                     e.toString(),
                                   ),
-                                  subtitle: const Divider(),
                                 );
                               },
                             ),
