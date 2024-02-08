@@ -10,43 +10,42 @@ import 'widgets/custom/custom_modal_mult_select.dart';
 import 'widgets/custom/custom_modal_select.dart';
 import 'widgets/custom/custom_text_field.dart';
 
-class CriteriaSchema {
-  RecordCriteriaFieldList criteriaFields = [];
-  RecordCriteriaFieldList _criteriaFieldsModel = [];
-  CriteriaSchema();
+class Wod {
+  RecordWodFieldList wodFields = [];
+  RecordWodFieldList _wodFieldsModel = [];
+  Wod();
 
-  /// usage when you need to set a criteria schema
-  setCriteriaFieldsModel(List<RecordCriteriaField> criteriaFields) {
-    _criteriaFieldsModel.clear();
-    _criteriaFieldsModel = List.from(criteriaFields);
+  /// usage when you need to set a wod schema
+  setWodFieldsModel(List<RecordWodField> wodFields) {
+    _wodFieldsModel.clear();
+    _wodFieldsModel = List.from(wodFields);
   }
 
-  RecordCriteriaField? getFieldByName(String fieldName) {
-    return _criteriaFieldsModel
+  RecordWodField? getFieldByName(String fieldName) {
+    return _wodFieldsModel
         .where((element) => element.fieldName == fieldName)
         .firstOrNull;
   }
 
-  CriteriaSchema replaceField(
-      {required String fieldName, required RecordCriteriaField field}) {
-    final index = _criteriaFieldsModel
-        .indexWhere((element) => element.fieldName == fieldName);
+  Wod replaceField({required String fieldName, required RecordWodField field}) {
+    final index =
+        _wodFieldsModel.indexWhere((element) => element.fieldName == fieldName);
     if (index != -1) {
-      _criteriaFieldsModel[index] = field;
+      _wodFieldsModel[index] = field;
     }
     return this;
   }
 
-  /// return a list of widgets with the fields of the criteria
+  /// return a list of widgets with the fields of the wod
   List<({String fieldName, Widget fieldWidget, dynamic value})>
-      getCriteriaWidgets() {
-    List<({String fieldName, Widget fieldWidget, dynamic value})>
-        criteriaWidgets = [];
+      getWodWidgets() {
+    List<({String fieldName, Widget fieldWidget, dynamic value})> wodWidgets =
+        [];
 
     var fieldNamesCount = <String, int>{};
-    var duplicates = <RecordCriteriaField>[];
+    var duplicates = <RecordWodField>[];
 
-    for (var model in _criteriaFieldsModel) {
+    for (var model in _wodFieldsModel) {
       if (fieldNamesCount.containsKey(model.fieldName)) {
         fieldNamesCount[model.fieldName] =
             fieldNamesCount[model.fieldName]! + 1;
@@ -59,22 +58,22 @@ class CriteriaSchema {
     }
     if (duplicates.isNotEmpty) {
       throw Exception(
-          'duplicates criteria field: \n The criteria scheme on field "fieldName" must be unique, and i have ${duplicates.length} criteria field${duplicates.length > 1 ? 's' : ''}  in ocurrence...\nsee in the list.\n\n${duplicates.map((e) => '\n$e').toList()}\n');
+          'duplicates wod field: \n The wod scheme on field "fieldName" must be unique, and i have ${duplicates.length} wod field${duplicates.length > 1 ? 's' : ''}  in ocurrence...\nsee in the list.\n\n${duplicates.map((e) => '\n$e').toList()}\n');
     }
-    for (var field in _criteriaFieldsModel) {
+    for (var field in _wodFieldsModel) {
       final render = _renderWidget(field);
-      criteriaWidgets.add((
+      wodWidgets.add((
         fieldName: field.fieldName,
         fieldWidget: render.widget,
         value: field.valor.valor
       ));
     }
-    return criteriaWidgets;
+    return wodWidgets;
   }
 
   ///
   ///
-  /// return a list of widgets with the fields of the criteria
+  /// return a list of widgets with the fields of the wod
 
   ({
     bool isValid,
@@ -91,7 +90,7 @@ class CriteriaSchema {
           String fieldName,
           String fieldLabel,
         })> list = [];
-    for (var field in _criteriaFieldsModel) {
+    for (var field in _wodFieldsModel) {
       if (field.validatorUtil != null) {
         if (field.validatorUtil!.validator != null) {
           if (!field.validatorUtil!.validator!(field.valor.valor).isValid) {
@@ -114,13 +113,13 @@ class CriteriaSchema {
 
   List<RecordFieldWidget> _getFieldsWidgets(
       {required List<String> fieldsName}) {
-    if (_criteriaFieldsModel.isEmpty) {
+    if (_wodFieldsModel.isEmpty) {
       throw Exception(
-          'criteriaFieldsModel is empty, you must setCriteriaFieldsModel before call this method');
+          'wodFieldsModel is empty, you must setWodFieldsModel before call this method');
     } else {
       List<RecordFieldWidget> listFieldsWidgets = [];
       if (fieldsName.isEmpty) {
-        for (var fieldSchema in _criteriaFieldsModel) {
+        for (var fieldSchema in _wodFieldsModel) {
           final render = _renderWidget(fieldSchema);
           final fieldWidget = (
             fieldName: fieldSchema.fieldName,
@@ -134,7 +133,7 @@ class CriteriaSchema {
         }
       } else {
         try {
-          final fields = _criteriaFieldsModel
+          final fields = _wodFieldsModel
               .where((element) => fieldsName.contains(element.fieldName))
               .toList();
 
@@ -154,7 +153,7 @@ class CriteriaSchema {
           } else {
             if (fieldsName.length == 1) {
               final stringLabel =
-                  'field not found: ${fieldsName.first}\n The criteria scheme on field "${fieldsName.first}" must be unique, and must be not null\n';
+                  'field not found: ${fieldsName.first}\n The wod scheme on field "${fieldsName.first}" must be unique, and must be not null\n';
               // log(stringLabel);
               listFieldsWidgets.add(
                 (
@@ -168,7 +167,7 @@ class CriteriaSchema {
               );
             } else {
               final stringLabel =
-                  'fields not found: ${fieldsName.join(', ')}\n The criteria scheme on field "${fieldsName.join(', ')}" must be unique, and must be not null\n';
+                  'fields not found: ${fieldsName.join(', ')}\n The wod scheme on field "${fieldsName.join(', ')}" must be unique, and must be not null\n';
               // log(stringLabel);
               RecordFieldWidget fieldSchema = (
                 fieldName: fieldsName.join(', '),
@@ -181,7 +180,7 @@ class CriteriaSchema {
               listFieldsWidgets.add(fieldSchema);
             }
             throw Exception(
-                'field not found: ${fieldsName.join(', ')}\n The criteria scheme on field "${fieldsName.join(', ')}" must be unique, and must be not null\n');
+                'field not found: ${fieldsName.join(', ')}\n The wod scheme on field "${fieldsName.join(', ')}" must be unique, and must be not null\n');
           }
         } catch (e, s) {
           return listFieldsWidgets;
@@ -191,7 +190,7 @@ class CriteriaSchema {
     }
   }
 
-  /// return a widget with the field of the criteria
+  /// return a widget with the field of the wod
 
   RecordFieldWidget getFieldWidgetByName(String fieldName) {
     return _getFieldsWidgets(
@@ -199,7 +198,7 @@ class CriteriaSchema {
     ).first;
   }
 
-  /// return a list of widgets with the fields of the criteria
+  /// return a list of widgets with the fields of the wod
 
   List<RecordFieldWidget> getFieldsWidget() {
     return _getFieldsWidgets(
@@ -207,22 +206,22 @@ class CriteriaSchema {
     );
   }
 
-  /// return a list of widgets with the fields of the criteria by names
+  /// return a list of widgets with the fields of the wod by names
   ///
   List<RecordFieldWidget> getFieldsWidgetsByNames(List<String> fieldNames) {
     return _getFieldsWidgets(fieldsName: fieldNames);
   }
 
-  /// return a list of criteria fields in this schema
-  RecordCriteriaFieldList criteriaFieldsModel() {
-    for (var field in _criteriaFieldsModel) {
-      criteriaFields.add(field);
+  /// return a list of wod fields in this schema
+  RecordWodFieldList wodFieldsModel() {
+    for (var field in _wodFieldsModel) {
+      wodFields.add(field);
     }
-    return criteriaFields;
+    return wodFields;
   }
 
   dynamic getValue(String value) {
-    final field = _criteriaFieldsModel
+    final field = _wodFieldsModel
         .where((element) => element.fieldName == value)
         .firstOrNull;
     if (field != null) {
@@ -233,8 +232,8 @@ class CriteriaSchema {
   }
 }
 
-/// usage with criteria schema of validate fields from validateUtilClass
-String? Function(String?)? _validator(RecordCriteriaField recordField) {
+/// usage with wod schema of validate fields from validateUtilClass
+String? Function(String?)? _validator(RecordWodField recordField) {
   return (value) {
     if (recordField.validatorUtil != null) {
       if (recordField.validatorUtil!.validator != null) {
@@ -249,12 +248,11 @@ String? Function(String?)? _validator(RecordCriteriaField recordField) {
   };
 }
 
-/// render a widget from criteria schema by type of field
-({Widget widget, Stream<RecordCriteriaField> onAction}) _renderWidget(
-    RecordCriteriaField field) {
-  StreamController<RecordCriteriaField> streamController = StreamController();
-  Stream<RecordCriteriaField> stream =
-      streamController.stream.asBroadcastStream();
+/// render a widget from wod schema by type of field
+({Widget widget, Stream<RecordWodField> onAction}) _renderWidget(
+    RecordWodField field) {
+  StreamController<RecordWodField> streamController = StreamController();
+  Stream<RecordWodField> stream = streamController.stream.asBroadcastStream();
   bool enableMultSelect = field.valor.listOptions?.enableMultSelect ?? false;
 
   Widget w = switch (field.tipo.toString().split('<')[0]) {

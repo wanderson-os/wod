@@ -2,8 +2,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:wod/src/model/class.dart';
 
-typedef RecordCriteriaFieldList = List<RecordCriteriaField>;
-typedef RecordCriteriaField = ({
+typedef RecordWodFieldList = List<RecordWodField>;
+typedef RecordWodField = ({
   bool requiredIcon,
   bool enabled,
   String fieldLabel,
@@ -16,7 +16,7 @@ typedef RecordFieldWidget = ({
   String fieldName,
   Widget fieldWidget,
   String fieldLabel,
-  Stream<RecordCriteriaField> onAction,
+  Stream<RecordWodField> onAction,
   ResultUtil valor,
   Type tipo,
 });
