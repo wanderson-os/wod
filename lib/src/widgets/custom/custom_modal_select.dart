@@ -162,6 +162,7 @@ class CustomModalSelect<T> extends StatelessWidget {
                           child: SingleChildScrollView(
                             scrollDirection: Axis.vertical,
                             child: ListView.separated(
+                              physics: const NeverScrollableScrollPhysics(),
                               separatorBuilder: (context, index) =>
                                   const Divider(
                                 height: 1,
