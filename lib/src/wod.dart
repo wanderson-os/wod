@@ -260,6 +260,7 @@ String? Function(String?)? _validator(RecordWodField recordField) {
         key: Key(field.fieldName.hashCode.toString()),
         builder: (context, setState) {
           return TextFormField(
+            keyboardType: TextInputType.text,
             readOnly: !field.enabled,
             minLines: 1,
             maxLines: 3,
@@ -291,14 +292,7 @@ String? Function(String?)? _validator(RecordWodField recordField) {
               label: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(field.fieldLabel),
-                  if (field.requiredIcon)
-                    const Text(
-                      '*',
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
+                  Text((field.requiredIcon ? '*' : '') + field.fieldLabel),
                 ],
               ),
               errorBorder: const OutlineInputBorder(
@@ -421,12 +415,12 @@ String? Function(String?)? _validator(RecordWodField recordField) {
             ],
             enableInteractiveSelection: false,
             selectionControls: MaterialTextSelectionControls(),
-            initialValue: field.valor.valor?.toString() ?? '0',
+            initialValue: field.valor.valor?.toString(),
             onChanged: (value) {
               setState(
                 () {
                   if (value.isEmpty) {
-                    field.valor.valor = 0;
+                    field.valor.valor = '';
                   } else {
                     field.valor.valor = int.tryParse(value);
                   }
@@ -450,14 +444,61 @@ String? Function(String?)? _validator(RecordWodField recordField) {
               label: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(field.fieldLabel),
-                  if (field.requiredIcon)
-                    const Text(
-                      '*',
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    ),
+                  Text((field.requiredIcon ? '*' : '') + field.fieldLabel),
+                ],
+              ),
+              errorBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                  width: 2,
+                  color: Colors.red,
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    'double' => StatefulBuilder(
+        builder: (context, setState) {
+          return TextFormField(
+            readOnly: !field.enabled,
+            validator: _validator(field),
+            keyboardType: TextInputType.number,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(
+                  RegExp(r'^-?([0-9]+(\.[0-9]+)?)$')),
+            ],
+            enableInteractiveSelection: false,
+            selectionControls: MaterialTextSelectionControls(),
+            initialValue: field.valor.valor?.toString(),
+            onChanged: (value) {
+              setState(
+                () {
+                  if (value.isEmpty) {
+                    field.valor.valor = '';
+                  } else {
+                    field.valor.valor = int.tryParse(value);
+                  }
+                  streamController.sink.add(field);
+                },
+              );
+            },
+            key: Key(field.fieldName),
+            decoration: InputDecoration(
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+              focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(),
+              ),
+              border: OutlineInputBorder(
+                borderSide: const BorderSide(
+                  width: 1,
+                  color: Colors.black,
+                ),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              label: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text((field.requiredIcon ? '*' : '') + field.fieldLabel),
                 ],
               ),
               errorBorder: const OutlineInputBorder(
@@ -490,36 +531,38 @@ String? Function(String?)? _validator(RecordWodField recordField) {
 
           if (isEnable) {
             if (enableMultSelect) {
-              return StatefulBuilder(builder: (context, setState) {
-                return (CustomModalMultSelect<dynamic>(
-                  onCancel: () {},
-                  onConfirm: (list) {},
-                  onRemove: (item) {},
-                  selectedItens: field.valor.valor,
-                  label: field.fieldLabel,
-                  list: field.valor.listOptions?.itens ?? [],
-                  onChange: (value) {
-                    field.valor.valor = value;
-                    streamController.sink.add(field);
-                  },
-                  withSearch: enableSeach,
-                  required: (
-                    required: field.requiredIcon,
-                    validator: (value) {
-                      if (field.validatorUtil != null) {
-                        if (field.validatorUtil!.validator != null) {
-                          if (!field.validatorUtil!
-                              .validator!(field.valor.valor).isValid) {
-                            return field.validatorUtil!
-                                .validator!(field.valor.valor).message;
+              return StatefulBuilder(
+                builder: (context, setState) {
+                  return (CustomModalMultSelect<dynamic>(
+                    onCancel: () {},
+                    onConfirm: (list) {},
+                    onRemove: (item) {},
+                    selectedItens: field.valor.valor,
+                    label: field.fieldLabel,
+                    list: field.valor.listOptions?.itens ?? [],
+                    onChange: (value) {
+                      field.valor.valor = value;
+                      streamController.sink.add(field);
+                    },
+                    withSearch: enableSeach,
+                    required: (
+                      required: field.requiredIcon,
+                      validator: (value) {
+                        if (field.validatorUtil != null) {
+                          if (field.validatorUtil!.validator != null) {
+                            if (!field.validatorUtil!
+                                .validator!(field.valor.valor).isValid) {
+                              return field.validatorUtil!
+                                  .validator!(field.valor.valor).message;
+                            }
                           }
                         }
-                      }
-                      return null;
-                    },
-                  ),
-                ));
-              });
+                        return null;
+                      },
+                    ),
+                  ));
+                },
+              );
             } else {
               return StatefulBuilder(
                 builder: (context, setState) {
@@ -600,6 +643,7 @@ String? Function(String?)? _validator(RecordWodField recordField) {
               return SizedBox(
                 width: double.maxFinite,
                 child: CustomTextField(
+                  required: field.requiredIcon,
                   initialValue: field.valor.valor?.toString(),
                   keyTextField: Key(field.hashCode.toString()),
                   readOnly: true,

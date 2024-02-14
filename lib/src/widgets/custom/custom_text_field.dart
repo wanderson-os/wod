@@ -6,10 +6,12 @@ class CustomTextField extends StatelessWidget {
   String? initialValue;
   String label;
   bool? readOnly;
+  bool required;
   Function(String value)? onChanged;
   CustomTextField({
     super.key,
     this.onChanged,
+    required this.required,
     required this.keyTextField,
     this.initialValue,
     this.readOnly,
@@ -21,6 +23,9 @@ class CustomTextField extends StatelessWidget {
     return Container(
       constraints: const BoxConstraints(maxWidth: 350),
       child: TextFormField(
+        style: TextStyle(
+          color: !(readOnly ?? false) ? Colors.black : Colors.grey,
+        ),
         onChanged: (value) => onChanged == null ? null : onChanged!(value),
         readOnly: readOnly ?? false,
         key: keyTextField,
@@ -29,10 +34,19 @@ class CustomTextField extends StatelessWidget {
           floatingLabelBehavior: FloatingLabelBehavior.always,
           filled: true,
           fillColor: Colors.white,
-          labelText: label,
-          floatingLabelStyle: const TextStyle(
+          labelText: (required ? ' *' : '') + label,
+          floatingLabelStyle: TextStyle(
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: !(readOnly ?? false) ? Colors.black : Colors.grey,
+          ),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(10),
+            borderSide: BorderSide(
+              color: !(readOnly ?? false)
+                  ? Theme.of(context).primaryColor
+                  : Colors.grey,
+              width: 0,
+            ),
           ),
         ),
       ),
