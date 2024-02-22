@@ -464,8 +464,7 @@ String? Function(String?)? _validator(RecordWodField recordField) {
             validator: _validator(field),
             keyboardType:TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
-              FilteringTextInputFormatter.allow(
-                  RegExp(r'^-?([0-9]+(\.[0-9]+)?)$')),
+               FilteringTextInputFormatter.allow(RegExp(r'^\d*\,?\d*')),
             ],
             enableInteractiveSelection: false,
             selectionControls: MaterialTextSelectionControls(),
