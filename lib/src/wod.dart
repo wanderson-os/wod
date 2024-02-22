@@ -462,7 +462,7 @@ String? Function(String?)? _validator(RecordWodField recordField) {
           return TextFormField(
             readOnly: !field.enabled,
             validator: _validator(field),
-            keyboardType:TextInputType.numberWithOptions(decimal: true);,
+            keyboardType:TextInputType.numberWithOptions(decimal: true),
             inputFormatters: [
               FilteringTextInputFormatter.allow(
                   RegExp(r'^-?([0-9]+(\.[0-9]+)?)$')),
