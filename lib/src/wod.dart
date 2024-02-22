@@ -469,14 +469,14 @@ String? Function(String?)? _validator(RecordWodField recordField) {
             ],
             enableInteractiveSelection: false,
             selectionControls: MaterialTextSelectionControls(),
-            initialValue: field.valor.valor?.toString(),
+            initialValue: field.valor.valor?.toString()??'',
             onChanged: (value) {
               setState(
                 () {
                   if (value.isEmpty) {
                     field.valor.valor = '';
                   } else {
-                    field.valor.valor = int.tryParse(value);
+                    field.valor.valor = double.tryParse(value);
                   }
                   streamController.sink.add(field);
                 },
